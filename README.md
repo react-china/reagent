@@ -1,7 +1,7 @@
 
 ### Chinese translation of Reagent Intro
 
-Live page: http://reaact-china.github.io/reagent
+Live page: http://react-china.github.io/reagent
 
 If you want to help, fork this project, update this file:
 

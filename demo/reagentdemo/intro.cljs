@@ -12,7 +12,7 @@
   [:div
    [:p "我是一个组件!"]
    [:p.someclass
-    "I have " [:strong "粗体"]
+    "我有 " [:strong "粗体"]
     [:span {:style {:color "red"}} " 和红色 "] "的字."]])
 
 (defn simple-parent []
@@ -55,7 +55,7 @@
     (fn []
       [:div
        [:p "值现在是: " @val]
-       [:p "从这里修改他: " [atom-input val]]])))
+       [:p "从这里修改它: " [atom-input val]]])))
 
 (defn timer-component []
   (let [seconds-elapsed (atom 0)]
@@ -120,14 +120,14 @@
 
      [:p [:a github "Reagent"] " 在
      " [:a clojurescript "ClojureScript"] " 和 " [:a
-     react "React"] "提供了精简的接口. 它邦之你快速地定义 React 组件,
-     它单纯使用的是 ClojureScript 函数和数据,
-     能够用 " [:a hiccup "Hiccup"] "-类似的语法来描述你的组件."]
+     react "React"] " 提供了精简的接口. 它帮助你快速地定义 React 组件,
+     它单纯使用的是 ClojureScript 函数和数据类型,
+     能够用类似 " [:a hiccup "Hiccup"] " 的语法来描述组件."]
 
-     [:p "Reagent 的目标是实现快速定义任意复杂的 UI, 而只依靠很少的基本的概念,
+     [:p "Reagent 的目标是实现快速定义任意复杂的界面, 而只依靠很少的基本概念,
      同时默认的性能足够好, 不需要额外去操心."]
 
-     [:p "一个非常基本的 Reagent 组件看起是这样: "]
+     [:p "一个非常基础的 Reagent 组件看起是这样: "]
      [demo-component {:comp simple-component
                       :src (src-for [:simple-component])}]
 
@@ -142,9 +142,9 @@
 
      [:p [:strong "注意: "]
       "在上面的例子, " [:code "hello-component"] " 大概可以同时被认为是普通的
-      Clojure 函数, 而不是一个特殊的 Reagent 组件, 或者说, 可以用圆括号而不使用花括号.
+      Clojure 函数, 而不是一个特殊的 Reagent 组件, 或者说, 可以写成圆括号而不使用花括号.
       唯一的差别会是性能, 因为`真正`的 Reagent 组件只会在数据改变时重新渲染.
-      更多的复杂的组件(见下文)必须使用方括号来调用."]
+      更加复杂的组件(见下文)必须使用方括号来调用."]
 
      [:p "这是另一个例子, 把列表元素显示为 "
      [:code "seq"] ":" ]
@@ -155,17 +155,17 @@
      [:p [:strong "Note: "]
      "上面的 " [:code "^{:key item}"] " 在这个简单的例子里并不是非常必要,
      不过在列表的每个动态生成的组件上附加一个唯一的 key 是一个好的实践,
-     能够帮助 React 提升大的列表的性能. key 可以用 meta-data (就像这个例子), 或者作为"
+     能够帮助 React 提升大列表的性能. key 可以用 meta-data (就像前面这个例子), 或者作为"
      [:code ":key"] " 元素设置在组件的第一个参数(需要是 map)上.
-     阅读 React 的 " [:a dynamic-children "documentation"] "了解更多."]]))
+     阅读 React " [:a dynamic-children "文档"] "了解更多."]]))
 
 (defn managing-state []
   [:div.demo-text
-   [:h2 "Reagent 里管理状态"]
+   [:h2 "Reagent 的管理状态"]
 
-   [:p "Reagent 管理 state 最简单的版本是使用 Reagent 自带的版本的"
+   [:p "Reagent 管理状态最简单的办法是用 Reagent 自带的版本的"
    [:code "atom"] ". 它和在 clojure.core 里的 atom 运行起来一样,
-   除了它会记录它的每次 deref. 每个用了 " [:code "atom"]
+   除了它会记录它的每次 deref(解引用). 每个用了 " [:code "atom"]
    " 的组件在它的值改变时都会自动重新渲染."]
 
    [:p "我们用一个简单的例子演示一下:"]
@@ -185,15 +185,15 @@
    一个组件的函数可以返回另一个函数, 然后用于实际的渲染当中.
    这个函数和第一个函数用相同的参数去调用."]
 
-   [:p "这为对新创建的组件做初始化提供了方便, 而不用依赖 React 的生命中期事件."]
+   [:p "这为新创建的组件做初始化提供了方便, 而不用依赖 React 的生命周期事件."]
 
-   [:p "通过把 "[:code "atom"]" 进行传递, 你就可以共享组之间件的状态管理, 比如:"]
+   [:p "通过把 "[:code "atom"]" 进行传递, 你就可以共享组件之间的状态管理, 比如:"]
 
    [demo-component {:comp shared-state
                     :src (src-for [:ns :atom-input :shared-state])}]
 
    [:p [:strong "注意: "] "组件函数可以不加参数直接调用, 只要它们是不可变的.
-   你 "[:em "也许也可以"]" 使用可变的对象, 但那样你需要去保证数据改变时组件也改变.
+   你 "[:strong "也许也可以"]" 使用可变的对象, 但那样你需要去保证数据改变时组件也改变.
    Reagent 默认会假定两个引用相同的对象, 它们就是相等的."]])
 
 (defn essential-api []
@@ -216,14 +216,14 @@
    [:p "React 本身很快, 所以 Reagent 也是. 实际上, Reagent
    大部分时间会比一般的 React 还要快, 这要感谢 ClojureScript 实现的优化."]
 
-   [:p "已经挂载的组件只要在它们的促使改变是才会重新渲染.
-   这个改变可以来自 deref(间接引用)的"
+   [:p "已经挂载的组件只有在它们的数据改变时才会重新渲染.
+   这个改变可以来自 deref(解引用)的"
    [:code "atom"] ", 传递给组件的参数, 或者组件状态."]
 
    [:p "这里所有的修改的检查都是通过 "
    [:code "identical?"] " 函数, 仅仅是一次指针的对比, 因而开销非常低.
    作为参数传给组件的 Map 也是通过这个办法对比的:
-   他们所有的 entry 是一致的, 那么那么就是相等的.
+   它们所有的 entry 是一致的, 那么它们就是相等的.
    这同样适用于内置的 React 组件比如 " [:code ":div"] ", " [:code ":p"] ", 等等."]
 
    [:p "所有这些意味着你可以直接绝大部分时间不去关心性能.
@@ -232,7 +232,7 @@
    [:p "尽管如此, 有些场景还是需要留意一下. 如果你让 Reagent 去渲染一个巨大的组件的
     " [:code "seq"] ", 你需要给每个元素提供对应的 " [:code ":key"] " 属性,
     用来提升渲染的性能(见上文). 同时注意匿名函数通常来说不会相等,
-    即便他们表示的是相同的代码相同的闭包."]
+    即便它们表示的是相同的代码相同的闭包."]
 
    [:p "不过再次强调, 通常情况你只需要相信 React 和 Reagent 会足够快.
    这个特别的页面是用一个单一的 Reagent 组件, 由上千个子组件组成的,
