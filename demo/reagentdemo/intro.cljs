@@ -10,21 +10,21 @@
 
 (defn simple-component []
   [:div
-   [:p "I am a component!"]
+   [:p "我是一个组件!"]
    [:p.someclass
-    "I have " [:strong "bold"]
-    [:span {:style {:color "red"}} " and red "] "text."]])
+    "I have " [:strong "粗体"]
+    [:span {:style {:color "red"}} " 和红色 "] "的字."]])
 
 (defn simple-parent []
   [:div
-   [:p "I include simple-component."]
+   [:p "我包含包含了 simple-component."]
    [simple-component]])
 
 (defn hello-component [name]
-  [:p "Hello, " name "!"])
+  [:p "你好, " name "!"])
 
 (defn say-hello []
-  [hello-component "world"])
+  [hello-component "世界"])
 
 (defn lister [items]
   [:ul
@@ -33,16 +33,16 @@
 
 (defn lister-user []
   [:div
-   "Here is a list:"
+   "这是个列表:"
    [lister (range 3)]])
 
 (def click-count (atom 0))
 
 (defn counting-component []
   [:div
-   "The atom " [:code "click-count"] " has value: "
+   "这个 atom " [:code "click-count"] " 的值是: "
    @click-count ". "
-   [:input {:type "button" :value "Click me!"
+   [:input {:type "button" :value "点我!"
             :on-click #(swap! click-count inc)}]])
 
 (defn atom-input [value]
@@ -54,15 +54,15 @@
   (let [val (atom "foo")]
     (fn []
       [:div
-       [:p "The value is now: " @val]
-       [:p "Change it here: " [atom-input val]]])))
+       [:p "值现在是: " @val]
+       [:p "从这里修改他: " [atom-input val]]])))
 
 (defn timer-component []
   (let [seconds-elapsed (atom 0)]
     (fn []
       (js/setTimeout #(swap! seconds-elapsed inc) 1000)
       [:div
-       "Seconds Elapsed: " @seconds-elapsed])))
+       "时间按秒流逝了: " @seconds-elapsed])))
 
 (defn render-simple []
   (reagent/render-component [simple-component]
@@ -88,12 +88,12 @@
 (defn bmi-component []
   (let [{:keys [weight height bmi]} (calc-bmi)
         [color diagnose] (cond
-                          (< bmi 18.5) ["orange" "underweight"]
-                          (< bmi 25) ["inherit" "normal"]
-                          (< bmi 30) ["orange" "overweight"]
+                          (< bmi 18.5) ["orange" "过轻"]
+                          (< bmi 25) ["inherit" "正常"]
+                          (< bmi 30) ["orange" "超重"]
                           :else ["red" "obese"])]
     [:div
-     [:h3 "BMI calculator"]
+     [:h3 "BMI 计算器"]
      [:div
       "Height: " (int height) "cm"
       [slider :height height 100 220]]
@@ -116,172 +116,142 @@
         dynamic-children {:href "http://facebook.github.io/react/docs/multiple-components.html#dynamic-children"}]
     [:div.demo-text
 
-     [:h2 "Introduction to Reagent"]
+     [:h2 "介绍一下 Reagent"]
 
-     [:p [:a github "Reagent"] " provides a minimalistic interface
-     between " [:a clojurescript "ClojureScript"] " and " [:a
-     react "React"] ". It allows you to define efficient React
-     components using nothing but plain ClojureScript functions and
-     data, that describe your UI using a " [:a hiccup "Hiccup"] "-like
-     syntax."]
+     [:p [:a github "Reagent"] " 在
+     " [:a clojurescript "ClojureScript"] " 和 " [:a
+     react "React"] "提供了精简的接口. 它邦之你快速地定义 React 组件,
+     它单纯使用的是 ClojureScript 函数和数据,
+     能够用 " [:a hiccup "Hiccup"] "-类似的语法来描述你的组件."]
 
-     [:p "The goal of Reagent is to make it possible to define
-     arbitrarily complex UIs using just a couple of basic concepts,
-     and to be fast enough by default that you rarely have to care
-     about performance."]
+     [:p "Reagent 的目标是实现快速定义任意复杂的 UI, 而只依靠很少的基本的概念,
+     同时默认的性能足够好, 不需要额外去操心."]
 
-     [:p "A very basic Reagent component may look something like this: "]
+     [:p "一个非常基本的 Reagent 组件看起是这样: "]
      [demo-component {:comp simple-component
                       :src (src-for [:simple-component])}]
 
-     [:p "You can build new components using other components as
-     building blocks. Like this:"]
+     [:p "你可以把其他组件作为积木来创造新的组件, 比如:"]
      [demo-component {:comp simple-parent
                       :src (src-for [:simple-parent])}]
 
-     [:p "Data is passed to child components using plain old Clojure
-     data types. Like this:"]
+     [:p "数据通过 Clojure 原本就有的基本数据类型传递到子组件, 比如:"]
 
      [demo-component {:comp say-hello
                       :src (src-for [:hello-component :say-hello])}]
 
-     [:p [:strong "Note: "]
-      "In the example above, " [:code "hello-component"] " might just
-      as well have been called as a normal Clojure function instead of
-      as a Reagent component, i.e with parenthesis instead of square
-      brackets. The only difference would have been performance, since
-      ”real” Reagent components are only re-rendered when their data
-      have changed. More advanced components though (see below) must
-      be called with square brackets."]
+     [:p [:strong "注意: "]
+      "在上面的例子, " [:code "hello-component"] " 大概可以同时被认为是普通的
+      Clojure 函数, 而不是一个特殊的 Reagent 组件, 或者说, 可以用圆括号而不使用花括号.
+      唯一的差别会是性能, 因为`真正`的 Reagent 组件只会在数据改变时重新渲染.
+      更多的复杂的组件(见下文)必须使用方括号来调用."]
 
-     [:p "Here is another example that shows items in a "
+     [:p "这是另一个例子, 把列表元素显示为 "
      [:code "seq"] ":" ]
 
      [demo-component {:comp lister-user
                       :src (src-for [:lister :lister-user])}]
 
      [:p [:strong "Note: "]
-     "The " [:code "^{:key item}"] " part above isn’t really necessary
-     in this simple example, but attaching a unique key to every item
-     in a dynamically generated list of components is good practice,
-     and helps React to improve performance for large lists. The key
-     can be given either (as in this example) as meta-data, or as a "
-     [:code ":key"] " item in the first argument to a component (if it
-     is a map). See React’s " [:a dynamic-children "documentation"] "
-     for more info."]]))
+     "上面的 " [:code "^{:key item}"] " 在这个简单的例子里并不是非常必要,
+     不过在列表的每个动态生成的组件上附加一个唯一的 key 是一个好的实践,
+     能够帮助 React 提升大的列表的性能. key 可以用 meta-data (就像这个例子), 或者作为"
+     [:code ":key"] " 元素设置在组件的第一个参数(需要是 map)上.
+     阅读 React 的 " [:a dynamic-children "documentation"] "了解更多."]]))
 
 (defn managing-state []
   [:div.demo-text
-   [:h2 "Managing state in Reagent"]
+   [:h2 "Reagent 里管理状态"]
 
-   [:p "The easiest way to manage state in Reagent is to use Reagent’s
-   own version of " [:code "atom"] ". It works exactly like the one in
-   clojure.core, except that it keeps track of every time it is
-   deref’ed. Any component that uses an " [:code "atom"]" is automagically
-   re-rendered when its value changes."]
+   [:p "Reagent 管理 state 最简单的版本是使用 Reagent 自带的版本的"
+   [:code "atom"] ". 它和在 clojure.core 里的 atom 运行起来一样,
+   除了它会记录它的每次 deref. 每个用了 " [:code "atom"]
+   " 的组件在它的值改变时都会自动重新渲染."]
 
-   [:p "Let’s demonstrate that with a simple example:"]
+   [:p "我们用一个简单的例子演示一下:"]
    [demo-component {:comp counting-component
                     :src (src-for [:ns :click-count :counting-component])}]
 
-   [:p "Sometimes you may want to maintain state locally in a
-   component. That is easy to do with an " [:code "atom"] " as well."]
+   [:p "有时你要在一个组件局部维护状态.
+   这种情况用 " [:code "atom"] " 处理起来也容易."]
 
-   [:p "Here is an example of that, where we call "
-    [:code "setTimeout"] " every time the component is rendered to
-   update a counter:"]
+   [:p "这是一个例子, 每次调用 "
+    [:code "setTimeout"] " 组件就会被渲染然后更新计数器:"]
 
    [demo-component {:comp timer-component
                     :src (src-for [:timer-component])}]
 
-   [:p "The previous example also uses another feature of Reagent: a
-   component function can return another function, that is used to do
-   the actual rendering. This function is called with the same
-   arguments as the first one."]
+   [:p "前面这个例子也用到了 Reagent 另一个功能:
+   一个组件的函数可以返回另一个函数, 然后用于实际的渲染当中.
+   这个函数和第一个函数用相同的参数去调用."]
 
-   [:p "This allows you to perform some setup of newly created
-   components without resorting to React’s lifecycle events."]
+   [:p "这为对新创建的组件做初始化提供了方便, 而不用依赖 React 的生命中期事件."]
 
-   [:p "By simply passing an "[:code "atom"]" around you can share
-   state management between components, like this:"]
+   [:p "通过把 "[:code "atom"]" 进行传递, 你就可以共享组之间件的状态管理, 比如:"]
 
    [demo-component {:comp shared-state
                     :src (src-for [:ns :atom-input :shared-state])}]
 
-   [:p [:strong "Note: "] "Component functions can be called with any
-   arguments – as long as they are immutable. You "[:em "could"]" use
-   mutable objects as well, but then you have to make sure that the
-   component is updated when your data changes. Reagent assumes by
-   default that two objects are equal if they are the same object."]])
+   [:p [:strong "注意: "] "组件函数可以不加参数直接调用, 只要它们是不可变的.
+   你 "[:em "也许也可以"]" 使用可变的对象, 但那样你需要去保证数据改变时组件也改变.
+   Reagent 默认会假定两个引用相同的对象, 它们就是相等的."]])
 
 (defn essential-api []
   [:div.demo-text
-   [:h2 "Essential API"]
+   [:h2 "基础 API"]
 
-   [:p "Reagent supports most of React’s API, but there is really only
-   one entry-point that is necessary for most applications: "
+   [:p "Reagent 支持大多数 React 的 API, 不过但与绝大多数应用,
+   真的仅仅一个调用的入口会被必须被用到: "
     [:code "reagent.core/render-component"] "."]
 
-   [:p "It takes two arguments: a component, and a DOM node. For
-   example, splashing the very first example all over the page would
-   look like this:"]
+   [:p "它接收两个参数: 一个组件, 一个 DOM 节点. 比如,
+   启动整个页面上第一个例子是这样写:"]
 
    [demo-component {:src (src-for [:ns :simple-component :render-simple])}]])
 
 (defn performance []
   [:div.demo-text
-   [:h2 "Performance"]
+   [:h2 "性能"]
 
-   [:p "React itself is very fast, and so is Reagent. In fact, Reagent
-   will be even faster than plain React a lot of the time, thanks to
-   optimizations made possible by ClojureScript."]
+   [:p "React 本身很快, 所以 Reagent 也是. 实际上, Reagent
+   大部分时间会比一般的 React 还要快, 这要感谢 ClojureScript 实现的优化."]
 
-   [:p "Mounted components are only re-rendered when their parameters
-   have changed. The change could come from a deref’ed "
-   [:code "atom"] ", the arguments passed to the component or
-   component state."]
+   [:p "已经挂载的组件只要在它们的促使改变是才会重新渲染.
+   这个改变可以来自 deref(间接引用)的"
+   [:code "atom"] ", 传递给组件的参数, 或者组件状态."]
 
-   [:p "All of these are checked for changes with "
-   [:code "identical?"] " which is basically only a pointer
-   comparison, so the overhead is very low. Maps passed as arguments
-   to components are compared the same way: they are considered equal
-   if all their entries are identical. This also applies to built-in
-   React components like " [:code ":div"] ", " [:code ":p"] ", etc."]
+   [:p "这里所有的修改的检查都是通过 "
+   [:code "identical?"] " 函数, 仅仅是一次指针的对比, 因而开销非常低.
+   作为参数传给组件的 Map 也是通过这个办法对比的:
+   他们所有的 entry 是一致的, 那么那么就是相等的.
+   这同样适用于内置的 React 组件比如 " [:code ":div"] ", " [:code ":p"] ", 等等."]
 
-   [:p "All this means that you simply won’t have to care about
-   performance most of the time. Just define your UI however you like
-   – it will be fast enough."]
+   [:p "所有这些意味着你可以直接绝大部分时间不去关心性能.
+   你怎么想就怎么定义你的界面, 它总是会足够快的."]
 
-   [:p "There are a couple of situations that you might have to care
-   about, though. If you give Reagent a big " [:code "seq"] " of
-   components to render, you might have to supply all of them with a
-   unique " [:code ":key"] " attribute to speed up rendering (see
-   above). Also note that anonymous functions are not, in general,
-   equal to each other even if they represent the same code and
-   closure."]
+   [:p "尽管如此, 有些场景还是需要留意一下. 如果你让 Reagent 去渲染一个巨大的组件的
+    " [:code "seq"] ", 你需要给每个元素提供对应的 " [:code ":key"] " 属性,
+    用来提升渲染的性能(见上文). 同时注意匿名函数通常来说不会相等,
+    即便他们表示的是相同的代码相同的闭包."]
 
-   [:p "But again, in general you should just trust that React and
-   Reagent will be fast enough. This very page is composed of a single
-   Reagent component with thousands of child components (every single
-   parenthesis etc in the code examples is a separate component), and
-   yet the page can be updated many times every second without taxing
-   the browser the slightest."]
+   [:p "不过再次强调, 通常情况你只需要相信 React 和 Reagent 会足够快.
+   这个特别的页面是用一个单一的 Reagent 组件, 由上千个子组件组成的,
+   (代码当中每个圆括号之类的地方都算一个独立的组件),
+   而且这个页面可以在每秒更新更多次, 而不会给浏览器增加哪怕一点负担."]
 
-   [:p "Incidentally, this page also uses another React trick: the
-   entire page is pre-rendered using Node, and "
-   [:code "reagent/render-component-to-string"] ". When it is loaded
-   into the browser, React automatically attaches event-handlers to
-   the already present DOM tree."]])
+   [:p "顺带说一下, 这个页面还用到了另一个 React 的花招:
+   整个页面同时也用 Node 以及 "
+   [:code "reagent/render-component-to-string"] " 做了预渲染.
+   当它被浏览器加载时, React 在已经需在的 DOM 树上自动加上事件处理器."]])
 
 (defn bmi-demo []
   [:div.demo-text
-   [:h2 "Putting it all together"]
+   [:h2 "集合到一起"]
 
-   [:p "Here is a slightly less contrived example: a simple BMI
-   calculator."]
+   [:p "这是一个稍微不那么人为设计的例子: 简单的 BMI 计算器."]
 
-   [:p "Data is kept in a single " [:code "reagent.core/atom"] ": a map
-   with height, weight and BMI as keys."]
+   [:p "数据储存在单个 " [:code "reagent.core/atom"] ": 一个 map,
+   包含 height, weight 和 BMI 作为 key."]
 
    [demo-component {:comp bmi-component
                     :src (src-for [:ns :bmi-data :calc-bmi :slider
@@ -291,9 +261,8 @@
   [:div.demo-text
    [:h2 "Complete demo"]
 
-   [:p "Reagent comes with a couple of complete examples, with
-   Leiningen project files and everything. Here’s one of them in
-   action:"]
+   [:p "Reagent 项目包含几个完整的例子, 包括
+   Leiningen 项目文件和全部代码. 这是其中的一个:"]
 
    [demo-component {:comp simpleexample/simple-example
                     :complete true
@@ -305,9 +274,8 @@
   [:div.demo-text
    [:h2 "Todomvc"]
 
-   [:p "The obligatory todo list looks roughly like this in
-   Reagent (cheating a little bit by skipping routing and
-   persistence):"]
+   [:p "Todolist 是 MVC 方案必须有的例子,
+   Reagent 里的大致上是这样(算是有点作弊, 跳过了路由和数据持久化):"]
 
    [demo-component {:comp todomvc/todo-app
                     :complete true
@@ -317,7 +285,7 @@
 
 (defn main []
   (let [show-all (atom false)
-        head "Reagent: Minimalistic React for ClojureScript"]
+        head "Reagent: 给 ClojureScript 的极简的 React"]
     (js/setTimeout #(reset! show-all true) 500)
     (fn []
       [:div.reagent-demo

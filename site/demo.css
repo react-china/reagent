@@ -1,5 +1,5 @@
 
-* { 
+* {
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -118,7 +118,7 @@ ul.nav > li.brand > a {
 }
 
 .demo-text > p, .demo-text > ul {
-    font-family: georgia, serif;
+    font-family: Roboto,Helvetica Neue,Hiragino Sans GB,Microsoft Yahei,sans-serif;
     font-size: 18px;
     line-height: 1.5em;
     color: #444;

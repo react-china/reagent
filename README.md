@@ -1,4 +1,25 @@
 
+### Chinese translation of Reagent Intro
+
+Live page: http://reaact-china.github.io/reagent
+
+If you want to help, fork this project, update this file:
+
+```bash
+demo/reagentdemo/intro.cljs
+```
+
+run these commands to refresh `index.html`:
+
+```bash
+lein cljsbuild once
+make gensite
+```
+
+and send PR at end.
+
+----
+
 # Reagent
 
 A simple [ClojureScript](http://github.com/clojure/clojurescript) interface to
@@ -34,7 +55,7 @@ Reagent uses [Hiccup-like](https://github.com/weavejester/hiccup) markup instead
 (defn some-component []
   [:div
    [:h3 "I am a component!"]
-   [:p.someclass 
+   [:p.someclass
     "I have " [:strong "bold"]
     [:span {:style {:color "red"}} " and red"]
     " text."]])
